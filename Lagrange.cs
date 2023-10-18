@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 
 namespace CalculationMethods_L5_WPF;
 
@@ -34,21 +35,28 @@ public abstract class Lagrange
         var interpolatedValue = y0 + ((x - x0) / (x1 - x0)) * (y1 - y0);
         return interpolatedValue;
     }*/
-    public static double Interpolate(double x)
+    public static double? Interpolate(double x)
     {
         int i = 0;
         // Проверка на выход за границы узлов
         if (x >= 0)
         {
-            if (x < _xValues[0] || x > _xValues[^1])
-                throw new ArgumentException("Точка x находится вне диапазона узлов.");
+            if (x < _xValues[0] || x > _xValues[^1]){
+                MessageBox.Show("Точка x находится вне диапазона узлов.", "Error", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return null;
+            }
             while (i < _xValues.Length && _xValues[i] < x) // Найти ближайшие узлы
                 i++;
         }
         else
         {
-            if (x > _xValues[0] || x < _xValues[^1])
-                throw new ArgumentException("Точка x находится вне диапазона узлов.");
+            if (x > _xValues[0] || x < _xValues[^1]){
+                MessageBox.Show("Точка x находится вне диапазона узлов.", "Error", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return null;
+            }
+
             while (i < _xValues.Length && _xValues[i] >= x) // Найти ближайшие узлы
                 i++;
         }
